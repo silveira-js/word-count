@@ -1,0 +1,26 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Word Counter{% endblock %}
+
+{% block content %}
+<form id="myForm" action="" method="POST">
+    {% csrf_token %}
+    <div class="form-control {% if form.text.errors%} invalid {% endif %}">
+        {{ form }}
+    </div>
+    <button class="button" type="submit" formnovalidate><span>Count!</span></button>
+    <input type="button" onclick="cleanResult(); customReset()" value="Reset">
+    <div class="counter" id="counter">{{ counter }}</div>
+</form>
+    
+
+<script>
+    function cleanResult() {
+    document.getElementById("counter").remove();
+    }
+
+    function customReset() {
+    document.getElementById("id_text").value = "";
+    }
+</script>
+{% endblock %}
