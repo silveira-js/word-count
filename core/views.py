@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic.edit import FormView
 from django.views import View
+from django.http import HttpResponse
 
 from .utils import word_counter
 from .forms import TextForm
@@ -12,6 +13,7 @@ class TextView(FormView):
     success_url = "/"
 
     def form_valid(self, form):
+        super().form_valid(form)
         text = form.cleaned_data['text']
         word_count = f'Word Count: {word_counter(text)}'
         context = self.get_context_data(form=form)

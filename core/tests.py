@@ -37,7 +37,7 @@ class HomePageTest(TestCase):
         response = self.client.get('/')
         self.assertIsInstance(response.context['form'], TextForm)
 
-    def test_add_text_form_view(self):
+    def test_it_returns_success_when_add_text(self):
         response = self.client.post('/', {'text': 'some text'})
         self.assertEqual(response.status_code, 200)
 
@@ -49,20 +49,27 @@ class HomePageTest(TestCase):
 
 class WordCounter(TestCase):
 
-    def test_word_counter_punctuation(self):
+    def test_word_counter_ignores_punctuation(self):
         text = "Text. With. Punctuation!"
         text2 = string.punctuation
         self.assertEqual(word_counter(text), 3)
         self.assertEqual(word_counter(text2), 0)
 
-    def test_word_counter_number(self):
+    def test_word_counter_ignores_extra_spaces(self):
         text = "This text have      number 3 2 1 and 5"
-        self.assertEqual(word_counter(text), 5)
+        self.assertEqual(word_counter(text), 9)
 
-    def test_word_counter_with_text_without_spaces(self):
+    def test_word_counter_works_with_text_without_spaces(self):
         text = "Text.With.Punctuation!23 45 65"
+        self.assertEqual(word_counter(text), 6)
+
+    def test_it_counts_hyphenated_words_as_one(self):
+        text = "Everything is up-to-date"
         self.assertEqual(word_counter(text), 3)
 
+    def test_it_counts_words_with_apostrophe_as_one(self):
+        text = "This won't fail"
+        self.assertEqual(word_counter(text), 3)
 
     
     
